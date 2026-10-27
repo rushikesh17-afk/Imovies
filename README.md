@@ -194,27 +194,114 @@ iMovies - Movie ticket booking made simple/
 
 ---
 
-## 🗄️ ER Diagram (Entity Relationships)
+## 🧬 ER Diagram
 
-The system consists of the following core entities and relationships:
+The ER Diagram of the Movie Ticket Booking System (iMovies) illustrates the structured relationships between nine core entities: User, Admin, Movie, Show, Theater, Seat, Booking, Payment, and Review.
 
-| Entity | Purpose | Key Relationships |
-|---|---|---|
-| **User** | Customers who browse and book tickets | Has many Bookings, Favorites, Reviews |
-| **Admin** | Platform administrators | Manages Movies, Theaters, Shows, Bookings |
-| **Movie** | Movie information | Has many Shows and Reviews |
-| **Theater** | Cinema halls with screens | Has many Shows with seat layouts |
-| **Show** | Specific screening schedule | Belongs to Movie & Theater, has booked seats |
-| **Seat** | Individual seats in theater | Tracked per show with availability status |
-| **Booking** | Ticket reservation records | Belongs to User & Show, linked to Payment |
-| **Payment** | Transaction details | Linked to Booking with payment status |
-| **Review** | User feedback and ratings | Belongs to User and Movie |
+```
+┌─────────────┐         ┌─────────────┐         ┌─────────────┐
+│     User     │         │    Admin     │         │    Movie     │
+├─────────────┤         ├─────────────┤         ├─────────────┤
+│ userId (PK)  │         │ adminId (PK) │         │ movieId (PK) │
+│ name         │         │ name         │         │ movieName    │
+│ email        │         │ email        │         │ description  │
+│ phoneNumber  │         │ password     │         │ genres[]     │
+│ password     │         │ role         │         │ releaseDate  │
+│ createdAt    │         │ createdAt    │         │ runtime      │
+└─────────────┘         └─────────────┘         │ certification│
+       │                                           │ trailerUrl   │
+       │ 1                                         │ media        │
+       │                                           │ rating       │
+       │                                           │ cast[]       │
+       ▼ *                                         └─────────────┘
+┌─────────────┐                                           │ 1
+│    Booking   │                                           │
+├─────────────┤                                           │ *
+│ bookingId(PK)│                                           ▼
+│ userId (FK)  │         ┌─────────────┐         ┌─────────────┐
+│ showId (FK)  │         │    Theater   │         │     Show     │
+│ seats[]      │         ├─────────────┤         ├─────────────┤
+│ totalAmount  │         │ theatreId(PK)│◄────────│ showId (PK)  │
+│ bookingDate  │         │ theatreName  │    1   * │ movieId (FK) │
+│ status       │         │ location     │         │ theatreName  │
+│ paymentStatus│         │ balconyPrice │         │ showDate     │
+└─────────────┘         │ middlePrice  │         │ showtime     │
+       │ 1               │ lowerPrice   │         │ tickets      │
+       │                 └─────────────┘         │ status       │
+       │ 1                       │ 1               │ adminEmail   │
+       ▼                         │                 └─────────────┘
+┌─────────────┐                   │ *                       │ 1
+│    Payment   │                   │                         │
+├─────────────┤                   ▼                         │ *
+│ paymentId(PK)│           ┌─────────────┐                   │
+│ bookingId(FK)│           │     Seat     │◄──────────────────┘
+│ amount       │           ├─────────────┤
+│ paymentMethod│           │ seatId (PK)  │
+│ transactionId│           │ showId (FK)  │
+│ status       │           │ seatNumber   │
+│ paymentDate  │           │ tier         │
+└─────────────┘           │ status       │
+                          └─────────────┘
+       ▲
+       │ 1
+       │
+┌─────────────┐         ┌─────────────┐
+│     User     │         │    Review    │
+└─────────────┘         ├─────────────┤
+       │ 1               │ reviewId(PK) │
+       │                 │ userId (FK)  │
+       └─────────*─────►│ movieId (FK) │
+                         │ rating       │
+                         │ comment      │
+                         │ createdAt    │
+                         └─────────────┘
+```
+
+**Entity Descriptions:**
+- **User** - Stores customer details (userId, name, email, phone number, password) and enables browsing, booking, maintaining watchlists, and providing reviews
+- **Admin** - Responsible for managing the overall platform, including movies, theaters, and show schedules
+- **Movie** - Contains movie details (title, genre, language, duration, cast, release date) linked to multiple shows and reviews
+- **Theater** - Represents cinema locations with information about theater name, location, and seat layouts
+- **Show** - Bridges movies and theaters storing showtime, date, screen details, pricing, and seat availability
+- **Seat** - Individual seats for each show helping track seat allocation and availability status
+- **Booking** - Stores reservation details (bookingId, date, selected seats, status, total amount) linking User, Show, and Seat
+- **Payment** - Linked to each Booking managing transaction details (payment ID, amount, method, status, date)
+- **Review** - Allows users to provide ratings and feedback for movies
 
 **Key Relationships:**
 - `Movie` → `Show` → `Seat` (Movies have shows, shows have seats)
 - `User` → `Booking` → `Payment` (Users make bookings with payments)
 - `Booking` → `Show` → `Seat` (Bookings are for specific shows and seats)
 - `User` → `Review` → `Movie` (Users review movies)
+- `Admin` → `Movie / Show / Theater` (Admin manages platform entities)
+
+---
+
+## 🔄 User Flow
+
+### User Journey
+1. **Registration/Login** - User registers or logs into the system
+2. **Browse Movies** - User browses available movies and selects a preferred movie
+3. **Select Show** - User chooses a theater, show timing, and preferred seats
+4. **Seat Selection** - System displays seat availability in real-time
+5. **Booking & Payment** - User confirms booking and proceeds with payment
+6. **Confirmation** - Payment processed successfully, booking details generated
+7. **Post-Booking** - Booking confirmation and ticket details sent via email
+8. **Engagement** - User can view booking history, manage reservations, and write movie reviews
+
+### Admin Journey
+1. **Admin Login** - Admin logs into the system dashboard
+2. **Content Management** - Admin manages movie listings, theater information, and show schedules
+3. **Monitor Operations** - Admin updates seat availability and monitors active bookings
+4. **Track & Report** - Admin tracks payments, booking reports, and customer feedback
+5. **Moderation** - Admin moderates reviews and ensures smooth platform operations
+
+### System Flow
+- `Movie` → `Show` → `Seat` - Movie screening scheduling and seat allocation
+- `User` → `Booking` → `Payment` - User booking and secure payment processing
+- `Booking` → `Show` → `Seat` - Bookings linked to specific shows and seats
+- `User` → `Review` → `Movie` - User reviews and ratings
+- `Admin` → `Movie / Show / Theater` - Administrative management of platform entities
 
 ---
 
