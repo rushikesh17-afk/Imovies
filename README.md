@@ -418,7 +418,8 @@ EMAIL_PASS=your_app_password
 - Deploy frontend to [Vercel](https://vercel.com/) from `client/` directory
 - Deploy backend to [Railway](https://railway.app/) or [Render](https://render.com/) from `server/` directory
 - Update CORS settings in `server.js` to allow your frontend domain
-- Set `VITE_API_BASE_URL` in frontend environment variables
+- In Vercel, set `VITE_API_URL` to your Render backend URL, for example `https://your-api.onrender.com`
+- Redeploy the Vercel frontend after adding or changing `VITE_API_URL`
 
 #### Option 3: Single Service Deployment
 Build the frontend into the server's public folder:
