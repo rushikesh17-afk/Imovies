@@ -1,0 +1,160 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+:root {
+  --bg-primary: #0b0e14;
+  --bg-secondary: #121620;
+  --bg-card: #161b26;
+  --bg-card-hover: #1c2331;
+  --accent-red: #e50914;
+  --accent-red-hover: #ff2a42;
+  --border-color: rgba(229, 9, 20, 0.35);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --text-dark: #64748b;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #252b3b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-red);
+}
+
+/* Layout container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Common Brand Header Text */
+.brand-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
+}
+
+.brand-title .red-text,
+.brand-title span.red {
+  color: var(--accent-red);
+}
+
+/* Common Card */
+.imovies-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.imovies-card:hover {
+  border-color: var(--accent-red);
+  box-shadow: 0 8px 24px rgba(229, 9, 20, 0.15);
+}
+
+/* Common Inputs */
+.imovies-input {
+  background-color: #0d121c !important;
+  border: 1px solid #2a3348 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 0.65rem 1rem !important;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.imovies-input:focus {
+  border-color: var(--accent-red) !important;
+  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.2) !important;
+  outline: none;
+}
+
+.imovies-input::placeholder {
+  color: #64748b !important;
+}
+
+/* Common Buttons */
+.btn-imovies-primary {
+  background-color: var(--accent-red);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-imovies-primary:hover {
+  background-color: var(--accent-red-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(229, 9, 20, 0.35);
+}
+
+.btn-imovies-outline {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-imovies-outline:hover {
+  border-color: var(--accent-red);
+  background-color: rgba(229, 9, 20, 0.1);
+  color: #ffffff;
+}
+
+/* Loader container */
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
